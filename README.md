@@ -11,6 +11,15 @@ An example of a data driven project is [World Happiness Report Visualization](ht
 3. How does the number of national holidays per year relate to happiness? 
 
 ## Datasets
+<<<<<<< HEAD
 
 
 The data for 2018 was downloaded from [https://www.kaggle.com/unsdsn/world-happiness#2018.csv](https://www.kaggle.com/unsdsn/world-happiness#2018.csv). The data was collected by Gallup World Poll surveys and the data is about world happiness levels in 2018 from various countries. There are 156 observations within this dataset with 9 features. This specific dataset can be used to help answer global questions by confounding this dataset with another to answer question 3. 
+=======
+af
+
+
+
+
+HEEYEEYYEYEEYEYEEYEY
+>>>>>>> 6cd8c3f885e9dba69495aa0dcc7d6d4d232054ba
