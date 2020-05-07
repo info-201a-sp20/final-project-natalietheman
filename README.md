@@ -12,4 +12,6 @@ An example of a data driven project is [World Happiness Report Visualization](ht
 
 ## Datasets
 
-2. We downloaded the McDonald's location data from [https://www.kaggle.com/ben1989/mcdonalds-locations](https://www.kaggle.com/ben1989/mcdonalds-locations). The data was collected by a Kaggle user (Ben1989) and displays information regarding the number of McDonald's restaurants within the U.S. There are 27 columns and 13802 rows. We can derive how many McDonald's locations there are per state and compare it to each states' level of happiness.
+The data for 2018 was downloaded from [https://www.kaggle.com/unsdsn/world-happiness#2018.csv](https://www.kaggle.com/unsdsn/world-happiness#2018.csv). The data was collected by Gallup World Poll surveys and the data is about world happiness levels in 2018 from various countries. There are 156 observations within this dataset with 9 features. This specific dataset can be used to help answer global questions by confounding this dataset with another to answer question 3. 
+
+We downloaded the McDonald's location data from [https://www.kaggle.com/ben1989/mcdonalds-locations](https://www.kaggle.com/ben1989/mcdonalds-locations). The data was collected by a Kaggle user (Ben1989) and displays information regarding the number of McDonald's restaurants within the U.S. There are 27 columns and 13802 rows. We can derive how many McDonald's locations there are per state and compare it to each states' level of happiness
