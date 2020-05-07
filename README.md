@@ -14,7 +14,7 @@ An example of a data driven project is [World Happiness Report Visualization](ht
 
 1. Happiest States 2020
 
-The data was downloaded online via the project website [https://worldpopulationreview.com/states/happiest-states/] (https://worldpopulationreview.com/states/happiest-states/). It was collected by _WalletHub_, and looked at both internal and external factors that affected the happiness of US residents per state. There are _three_ main categories: **emotional and physical well-being, work environment, and community and environment**. There are 50 rows, one for each state, and six columns: **rank**, **state**, **total score**, and a column for each of the above categories. Using the data from this dataset, we can answer questions about an individual's happiness based on their location, occupation, and interpersonal relationships.
+The data was downloaded online via the project website [https://worldpopulationreview.com/states/happiest-states/](https://worldpopulationreview.com/states/happiest-states/). It was collected by _WalletHub_, and looked at both internal and external factors that affected the happiness of US residents per state. There are _three_ main categories: **emotional and physical well-being, work environment, and community and environment**. There are 50 rows, one for each state, and six columns: **rank**, **state**, **total score**, and a column for each of the above categories. Using the data from this dataset, we can answer questions about an individual's happiness based on their location, occupation, and interpersonal relationships.
 
 2. World Happiness 2018
 
