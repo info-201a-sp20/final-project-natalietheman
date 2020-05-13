@@ -8,7 +8,7 @@ An example of a data driven project is [World Happiness Report Visualization](ht
 ## Questions
 1. How does GDP per capita relate to happiness within the United States?
 2. How does the number of McDonald's relate to happiness within the United States?
-3. How does the number of national holidays per year relate to happiness?
+3. How does the average age per country relate to the levels of happiness across the globe?
 
 ## Datasets
 
