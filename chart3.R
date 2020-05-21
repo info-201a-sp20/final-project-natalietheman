@@ -33,7 +33,7 @@ y <- list(title = "Average Life Expetancy")
 plot_ly(life_exp_per_year,
   x = ~Year, y = ~avg_life_exp, mode = "line",
   text = ~ paste(
-    "Year :", Year,
+    "Year:", Year,
     "<br> Avg LE:", round(avg_life_exp, 2)
   ),
   hoverinfo = "text"
