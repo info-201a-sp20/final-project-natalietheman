@@ -1,4 +1,3 @@
-library(stringr)
 library(dplyr)
 library(plotly)
 
@@ -20,9 +19,6 @@ avg_life_satisf <- country_group %>%
 
 avg <- merge(avg_life_exp, avg_life_satisf) %>%
   arrange(avg_life_exp)
-
-plot_ly(avg, x=~avg_life_exp, y=~avg_life_satisf, colors = "Reds") %>%
-  add_trace(text=~Entity)
 
 year_group <- df_filter %>%
   group_by(Year)
