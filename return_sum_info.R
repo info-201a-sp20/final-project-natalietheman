@@ -19,4 +19,3 @@ avg_life_satisf <- country_group %>%
                                    na.rm = TRUE))
 
 avg <- merge(avg_life_exp, avg_life_satisf)
-
