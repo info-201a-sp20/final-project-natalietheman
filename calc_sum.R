@@ -4,6 +4,7 @@ library(dplyr)
 df <- read.csv("data/life-satisfaction-vs-life-expectancy.csv",
                stringsAsFactors = FALSE)
 
+# filter out na values, get rid of population column
 df_filter <- df %>%
 filter(
 !is.na
