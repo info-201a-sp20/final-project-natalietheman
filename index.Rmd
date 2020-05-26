@@ -5,24 +5,52 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
 ```
 
-## R Markdown
+## Introductory Paragraph
+Our dataset consists of values listing **life satisfaction** and **life expectancies** of various countries over a period of time. Levels of life satisfaction are measured based on the Cantril Ladder. We retrieved the dataset from 9 different data sources:
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+* [World Happiness Report](https://worldhappiness.report/)
+* [European Commission – Eurobarometer Interactive](http://ec.europa.eu/commfrontoffice/publicopinion/index.cfm/Chart/index)
+* [The World Value Survey (WVS)](http://www.worldvaluessurvey.org/WVSDocumentationWVL.jsp)
+* [Pew Global Attitudes Survey](www.pewglobal.org)
+* [US General Social Survey](https://gssdataexplorer.norc.org)
+* [British Office for National Statistics](https://gssdataexplorer.norc.org)
+* [Germany – Deutsche Post Glücksatlas](http://www.gluecksatlas.de/)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
+```{r echo = FALSE}
+source("calc_sum.R")
+df <- read.csv("data/life-satisfaction-vs-life-expectancy.csv",
+               stringsAsFactors = FALSE)
+df_filter <- df %>%
+filter(
+!is.na
+  (Life.satisfaction..measured.from.lowest.0.to.highest.10.on.Cantril.Ladder.)
+) %>%
+  filter(!is.na(Life.expectancy..years.)) %>%
+  select(-Total.population..Gapminder.)
+
+list <- get_summary_info(df_filter)
 ```
+## Summary Paragraph
+We created a summary to calculate: 
 
-## Including Plots
+* Number of entries = `r list$rows`
+* Average life expectancy = `r list$life_exp_mean`
+* Average life satisfaction = `r list$life_sat_mean`
+* Minimum life expectancy = `r list$life_exp_min`
+* Minimum life satisfaction = `r list$life_sat_min`
+* Maximum life expectancy = `r list$life_exp_max`
+* Maximum life satisfaction = `r list$life_sat_max`
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Render your table and describe pertinent observations found in it
+## Table Observations
+
+Describe the purpose of each chart (e.g., "this chart was intended to show the relationship between..."), render each chart, and describe pertinent observations found in each chart
+## Chart 1
+## Chart 2
+## Chart 3

@@ -27,12 +27,13 @@ get_summary_info <- function(df) {
     max(
   df$Life.satisfaction..measured.from.lowest.0.to.highest.10.on.Cantril.Ladder.)
   return(list(rows = length,
-              life_exp_mean = mean_le,
-              life_sat_mean = mean_ls,
-              life_exp_min = min_le,
-              life_sat_min = min_ls,
-              life_exp_max = max_le,
-              life_sat_max = max_ls))
+              life_exp_mean = round(mean_le, 2),
+              life_sat_mean = round(mean_ls, 2),
+              life_exp_min = round(min_le, 2),
+              life_sat_min = round(min_ls, 2),
+              life_exp_max = round(max_le, 2),
+              life_sat_max = round(max_ls, 2))
+  )
 }
 
 get_summary_info(df_filter)
