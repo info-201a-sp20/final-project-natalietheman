@@ -29,7 +29,7 @@ avg <- merge(avg_life_exp, avg_life_satisf)
 y <- list(title = "Average Life Satisfaction")
 x <- list(title = "Average Life Expectancy")
 
-dotplot <- plot_ly(avg,
+plot_ly(avg,
                    x = ~avg_life_exp,
                    y = ~avg_life_satisf,
                    color = ~Entity) %>%
