@@ -3,12 +3,16 @@ title: "Life Satisfaction vs Life Expectancy"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
+library(dplyr)
 ```
 
 ## Introductory Paragraph
+The purpose of our project is to demonstrate how, as life expectancy increases,
+life satisfaction tends to increase as well.
+
 Our dataset consists of values listing **life satisfaction** and **life expectancies** of various countries over a period of time. Levels of life satisfaction are measured based on the Cantril Ladder. We retrieved the dataset from 9 different data sources:
 
 * [World Happiness Report](https://worldhappiness.report/)
@@ -20,22 +24,23 @@ Our dataset consists of values listing **life satisfaction** and **life expectan
 * [Germany – Deutsche Post Glücksatlas](http://www.gluecksatlas.de/)
 
 
-```{r echo = FALSE}
+```{r echo = FALSE, warning=FALSE}
 source("calc_sum.R")
 df <- read.csv("data/life-satisfaction-vs-life-expectancy.csv",
-               stringsAsFactors = FALSE)
+  stringsAsFactors = FALSE
+)
 df_filter <- df %>%
-filter(
-!is.na
-  (Life.satisfaction..measured.from.lowest.0.to.highest.10.on.Cantril.Ladder.)
-) %>%
+  filter(
+    !is.na
+    (Life.satisfaction..measured.from.lowest.0.to.highest.10.on.Cantril.Ladder.)
+  ) %>%
   filter(!is.na(Life.expectancy..years.)) %>%
   select(-Total.population..Gapminder.)
 
 list <- get_summary_info(df_filter)
 ```
 ## Summary Paragraph
-We created a summary to calculate: 
+We created a summary to calculate various helpful observations: 
 
 * Number of entries = `r list$rows`
 * Average life expectancy = `r list$life_exp_mean`
@@ -45,12 +50,67 @@ We created a summary to calculate:
 * Maximum life expectancy = `r list$life_exp_max`
 * Maximum life satisfaction = `r list$life_sat_max`
 
+## Aggregate Table
+```{r include=FALSE, warning=FALSE}
+source("return_sum_info.R")
+```
+`r kable(avg, col.names=c("Entity", "Average Life Expectancy", "Average Life Satisfaction"))`
+
+* The country with the _highest_ average life expectancy is
+`r avg %>% filter(avg_life_exp == max(avg_life_exp)) %>% pull(Entity)`
+(`r avg %>% filter(avg_life_exp == max(avg_life_exp)) %>% pull(avg_life_exp)`
+years).
+* The country with the _lowest_ average life expectancy is
+`r avg %>% filter(avg_life_exp == min(avg_life_exp)) %>% pull(Entity)`
+(`r avg %>% filter(avg_life_exp == min(avg_life_exp)) %>% pull(avg_life_exp)`
+years).
+* The country with the _highest_ average life satisfaction is
+`r avg %>% filter(avg_life_satisf == max(avg_life_satisf)) %>% pull(Entity)`
+(`r avg %>% filter(avg_life_satisf == max(avg_life_satisf)) %>% pull(avg_life_satisf)`
+years).
+* The country with the _lowest_ average life satisfaction is
+`r avg %>% filter(avg_life_satisf == min(avg_life_satisf)) %>% pull(Entity)`
+(`r avg %>% filter(avg_life_satisf == min(avg_life_satisf)) %>% pull(avg_life_satisf)`
+years).
+
+We grouped the data by using the _mean_ aggregate function because this
+provides a good representation of each country's statistics. It is more useful
+to show their averages rather than data from a particular year because this
+minimizes outliers.
 
 
-Render your table and describe pertinent observations found in it
 ## Table Observations
 
-Describe the purpose of each chart (e.g., "this chart was intended to show the relationship between..."), render each chart, and describe pertinent observations found in each chart
-## Chart 1
-## Chart 2
-## Chart 3
+### Chart 1
+```{r echo=FALSE, warning=FALSE}
+source("chart1.R")
+chart1(df)
+```
+The purpose of chart 1 is to detail how as life satisfaction increases,
+the range of life expectancy tends to cluster towards a higher life
+expectancy. As you can see, the general trend is: as life satisfaction goes up,
+life expectancy does as well. Ultimately, life satisfaction and life
+expectancy are correlated, but one does not necessarily cause the other.
+
+### Chart 2
+```{r include=FALSE, warning=FALSE}
+source("chart2.R")
+```
+`r chart2(df)`
+
+This chart compares the average life expectancy and average life satisfaction
+for each country. Each country is displayed as a different data point, in
+varying colors. There is a positive general trend: as life expectancy
+increases, life satisfaction also goes up.
+
+### Chart 3
+```{r include=FALSE,warning=FALSE}
+source("chart3.R")
+```
+`r life_exp_overtime(df)`
+
+This graphs depicts how life expectancy has increased throughout the 20th and
+21st centuries. There is a steady increase in life expectancy. Each data point
+is the life expectancy of all the countries combined. Although there are some
+countries that have higher life expectancies, the overall population of the
+world still experiences an increase in their life spans.

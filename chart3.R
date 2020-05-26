@@ -44,5 +44,5 @@ mean(Life.satisfaction..measured.from.lowest.0.to.highest.10.on.Cantril.Ladder.,
     ),
     hoverinfo = "text"
   ) %>%
-    layout(yaxis = y)
+    layout(yaxis = y, title = "Average Life Expectancy Over The Years")
 }
