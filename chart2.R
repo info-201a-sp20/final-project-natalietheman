@@ -4,7 +4,7 @@ library(styler)
 
 df <- read.csv("data/life-satisfaction-vs-life-expectancy.csv",
                stringsAsFactors = FALSE)
-
+chart2 <- function(df) {
 df_filter <- df %>%
   filter(!is.na(
     Life.satisfaction..measured.from.lowest.0.to.highest.10.on.Cantril.Ladder.)
@@ -36,3 +36,4 @@ dotplot <- plot_ly(avg,
   add_trace(text = ~Entity) %>%
   layout(title = "Avg Life Expectancy vs. Avg Life Satisfaction",
          xaxis = x, yaxis = y)
+}
