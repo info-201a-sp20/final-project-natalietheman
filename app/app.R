@@ -21,14 +21,18 @@ page_one <- tabPanel(
     mainPanel(
         h1("Questions"),
         p(strong("1. How does GDP per capita relate to happiness within the United States?")),
-        a("gdp link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/gdpPerState.csv"),
-        
-        p(strong("2. How does the number of McDonald's relate to happiness within the United States?
-")),
-        a("mcd link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/McDonalds.csv"),
-        
+        a("GDP Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/gdpPerState.csv"),
+        p("The link above is referencing the data set that we used to explore the first question.
+          This data set was obtained from the United States Bureau of Economic Analysis."),
+        p(strong("2. How does the number of McDonald's relate to happiness within the United States?")),
+        a("McDonalds Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/McDonalds.csv"),
+        p("The link above is referencing the data set that we used to explore the second question.
+          This data set was obtained from a kaggle user that gathered the data himself."),
         p(strong("3. How does the life expectancy per country relate to the levels of happiness across the globe?")),
-        a("lifeexp link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/life-satisfaction-vs-life-expectancy.csv")
+        a("Life expenctancy Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/life-satisfaction-vs-life-expectancy.csv"),
+        p("The link above is referencing the data set that we used to explore the third question.
+          This data set was obtained from the World Happiness Report, European Commission, World Value
+          Survey, and Pew Global Attitudes Survey.")
     )
 )
 
