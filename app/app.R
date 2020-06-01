@@ -12,6 +12,9 @@ library(dplyr)
 # source("../return_sum_info.R", chdir = TRUE)
 data <- read.csv("data/data.csv", stringsAsFactors = FALSE)
 gdp_data <- read.csv("data/gdpPerState.csv", stringsAsFactors = FALSE)
+ls_vs_le <- read.csv("data/life-satisfaction-vs-life-expectancy.csv",
+               stringsAsFactors = FALSE
+)
 
 
 # page one
@@ -50,7 +53,8 @@ page_three <- tabPanel(
 page_four <- tabPanel(
     "Life Expectancy",
     titlePanel("Life Expectancy"),
-    
+    life_slider
+    )
 )
 
 page_five <- tabPanel(
@@ -97,6 +101,26 @@ server <- function(input, output) {
     output$gdpData <- renderTable({
         newData <- merge(data, gdp_data)
         newData
+    })
+    
+    output$life_slider <- renderPlotly({
+        newData <- ls_vs_le %>% 
+            filter(!is.na(Life.expectancy..years.)) %>%
+            select(-Total.population..Gapminder.) %>% 
+            group_by(Entity) %>% 
+            summarize(avg_life_exp = mean(Life.expectancy..years., na.rm = TRUE))
+        
+        y <- list(title = "Average Life Expetancy")
+        
+        plot_ly(life_exp_per_year,
+                x = ~Year, y = ~avg_life_exp, mode = "line",
+                text = ~ paste(
+                    "Year:", Year,
+                    "<br> Avg LE:", round(avg_life_exp, 2)
+                ),
+                hoverinfo = "text"
+        ) %>%
+            layout(yaxis = y, title = "Average Life Expectancy Over The Years")
     })
     
 
