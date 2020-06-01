@@ -9,9 +9,33 @@
 
 library(shiny)
 library(dplyr)
+library(leaflet)
+library(stringr)
+
 # source("../return_sum_info.R", chdir = TRUE)
 data <- read.csv("data/data.csv", stringsAsFactors = FALSE)
 gdp_data <- read.csv("data/gdpPerState.csv", stringsAsFactors = FALSE)
+mcd <- read.csv("data/McDonalds.csv")
+
+coords <- strsplit(mcd$geometry.coordinates, ",")
+for (i in 1:length(coords)) {
+  coords[[i]][1] <- str_sub(coords[[i]][1], 2, -1)
+  coords[[i]][2] <- str_sub(coords[[i]][2], 1, -2)
+}
+
+lats <- c();
+longs <- c();
+for (i in 1:length(coords)) {
+  longs <- c(longs, coords[[i]][1])
+  lats <- c(lats, coords[[i]][2])
+}
+
+lats <- as.numeric(lats)
+longs <- as.numeric(longs)
+
+mcd <- mutate(mcd, lat = lats)
+mcd <- mutate(mcd, lon = longs)
+
 ls_vs_le <- read.csv("data/life-satisfaction-vs-life-expectancy.csv",
                stringsAsFactors = FALSE
 )
@@ -47,7 +71,10 @@ page_two <- tabPanel(
 
 page_three <- tabPanel(
     "McDonald's",
-    titlePanel("McDonald's")
+    titlePanel("McDonald's"),
+    mainPanel(
+      leafletOutput(outputId = "mcd_map")
+    )
 )
 
 page_four <- tabPanel(
@@ -55,7 +82,7 @@ page_four <- tabPanel(
     titlePanel("Life Expectancy"),
     life_slider
     )
-)
+
 
 page_five <- tabPanel(
     "pg5",
@@ -98,10 +125,28 @@ ui <- navbarPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
+<<<<<<< HEAD
     output$gdpData <- renderTable({
         newData <- data %>% 
             select(State)
         newData
+=======
+    output$mcd_map <- renderLeaflet({
+      
+      palette_fn <- colorFactor(
+        palette = "Dark2",
+        domain = range(mcd$geometry.coordinates)
+      )
+      
+      leaflet(data = mcd) %>%
+        addProviderTiles("Stamen.TonerLite") %>%
+        addCircleMarkers(
+          lat = ~lat,
+          lng = ~lon,
+          radius = 0.05,
+          fillOpacity = 0.1,#color = "Reds"
+        )
+>>>>>>> 0119be458dcd2ed6ad86a45c03f19f99f5e4398e
     })
     
     output$life_slider <- renderPlotly({
@@ -124,7 +169,6 @@ server <- function(input, output) {
             layout(yaxis = y, title = "Average Life Expectancy Over The Years")
     })
     
-
     # output$distPlot <- renderPlot({
     #     # generate bins based on input$bins from ui.R
     #     x    <- faithful[, 2]
