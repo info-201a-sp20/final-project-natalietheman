@@ -91,7 +91,8 @@ ui <- navbarPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
     output$gdpData <- renderTable({
-        newData <- merge(data, gdp_data)
+        newData <- data %>% 
+            select(State)
         newData
     })
     
