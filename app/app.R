@@ -11,6 +11,7 @@ library(shiny)
 library(dplyr)
 library(leaflet)
 library(stringr)
+library(plotly)
 
 # source("../return_sum_info.R", chdir = TRUE)
 data <- read.csv("data/data.csv", stringsAsFactors = FALSE)
@@ -79,8 +80,7 @@ page_three <- tabPanel(
 
 page_four <- tabPanel(
     "Life Expectancy",
-    titlePanel("Life Expectancy"),
-    life_slider
+    titlePanel("Life Expectancy")
     )
 
 
