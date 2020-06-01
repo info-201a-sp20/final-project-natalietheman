@@ -18,7 +18,7 @@ data <- read.csv("data/data.csv", stringsAsFactors = FALSE)
 gdp_data <- read.csv("data/gdpPerState.csv", stringsAsFactors = FALSE)
 mcd <- read.csv("data/McDonalds.csv")
 
-coords <- strsplit(mcd$geometry.coordinates, ",")
+coords <- strsplit(as.character(mcd$geometry.coordinates), ",")
 for (i in 1:length(coords)) {
   coords[[i]][1] <- str_sub(coords[[i]][1], 2, -1)
   coords[[i]][2] <- str_sub(coords[[i]][2], 1, -2)
@@ -80,8 +80,10 @@ page_three <- tabPanel(
 
 page_four <- tabPanel(
     "Life Expectancy",
-    titlePanel("Life Expectancy")
-    )
+    titlePanel("Life Expectancy"),
+    plotlyOutput("life_slider")
+    
+)
 
 
 page_five <- tabPanel(
@@ -133,11 +135,6 @@ server <- function(input, output) {
 =======
     output$mcd_map <- renderLeaflet({
       
-      palette_fn <- colorFactor(
-        palette = "Dark2",
-        domain = range(mcd$geometry.coordinates)
-      )
-      
       leaflet(data = mcd) %>%
         addProviderTiles("Stamen.TonerLite") %>%
         addCircleMarkers(
@@ -150,24 +147,39 @@ server <- function(input, output) {
     })
     
     output$life_slider <- renderPlotly({
-        newData <- ls_vs_le %>% 
-            filter(!is.na(Life.expectancy..years.)) %>%
-            select(-Total.population..Gapminder.) %>% 
-            group_by(Entity) %>% 
-            summarize(avg_life_exp = mean(Life.expectancy..years., na.rm = TRUE))
-        
-        y <- list(title = "Average Life Expetancy")
-        
-        plot_ly(life_exp_per_year,
-                x = ~Year, y = ~avg_life_exp, mode = "line",
-                text = ~ paste(
-                    "Year:", Year,
-                    "<br> Avg LE:", round(avg_life_exp, 2)
-                ),
-                hoverinfo = "text"
-        ) %>%
-            layout(yaxis = y, title = "Average Life Expectancy Over The Years")
+      df_filter <- ls_vs_le %>% #filter out na values and get rid of population
+        filter(!is.na(Life.expectancy..years.)) %>%
+        select(-Total.population..Gapminder.)
+      
+      # group by country
+      country_group <- df_filter %>%
+        group_by(Entity)
+      
+      # summary table of avg life expectancy of each country
+      avg_life_exp <- country_group %>%
+        summarize(avg_life_exp = mean(Life.expectancy..years., na.rm = TRUE))
+      
+      # group by year
+      year_group <- df_filter %>%
+        group_by(Year)
+      
+      # summary table of life expectancy per year, all countries combined
+      life_exp_per_year <- year_group %>%
+        summarize(avg_life_exp = mean(Life.expectancy..years.))
+      
+      y <- list(title = "Average Life Expectancy")
+      
+      plot_ly(life_exp_per_year,
+              x = ~Year, y = ~avg_life_exp, mode = "line",
+              text = ~ paste(
+                "Year:", Year,
+                "<br> Avg LE:", round(avg_life_exp, 2)
+              ),
+              hoverinfo = "text"
+      ) %>%
+        layout(yaxis = y, title = "Average Life Expectancy Over The Years")
     })
+    
     
     # output$distPlot <- renderPlot({
     #     # generate bins based on input$bins from ui.R
