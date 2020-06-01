@@ -26,7 +26,7 @@ Our dataset consists of values listing **life satisfaction** and **life expectan
 
 ```{r echo = FALSE, warning=FALSE}
 source("calc_sum.R")
-df <- read.csv("data/life-satisfaction-vs-life-expectancy.csv",
+df <- read.csv("data/life-satisfaction-vs-life-expectancy.csv"
   stringsAsFactors = FALSE
 )
 df_filter <- df %>%
