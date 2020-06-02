@@ -127,12 +127,26 @@ ui <- navbarPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-<<<<<<< HEAD
     output$gdpData <- renderTable({
-        newData <- data %>% 
-            select(State)
+        newData <- gdp_data %>% 
         newData
-=======
+    })
+    
+    
+    ####GET THESE MEANS DONE
+    
+    q1 <- as.numeric(gsub(",","",gdp_data$X2018Q1))
+    q2 <- as.numeric(gsub(",","",gdp_data$X2018Q2))
+    q3 <- as.numeric(gsub(",","",gdp_data$X2018Q3))
+    q4 <- as.numeric(gsub(",","",gdp_data$X2018Q4))
+
+    gdp <- q1 + q2 + q3 + q4
+    gdp_data$sums <- gdp
+    
+    ######
+    
+    
+    
     output$mcd_map <- renderLeaflet({
       
       leaflet(data = mcd) %>%
@@ -143,7 +157,6 @@ server <- function(input, output) {
           radius = 0.05,
           fillOpacity = 0.1,#color = "Reds"
         )
->>>>>>> 0119be458dcd2ed6ad86a45c03f19f99f5e4398e
     })
     
     output$life_slider <- renderPlotly({
@@ -193,3 +206,4 @@ server <- function(input, output) {
 
 # Run the application 
 shinyApp(ui = ui, server = server)
+
