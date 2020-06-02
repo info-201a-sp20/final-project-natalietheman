@@ -61,7 +61,10 @@ page_one <- tabPanel(
         p("The link above is referencing the data set that we used to explore the third question.
           This data set was obtained from the World Happiness Report, European Commission, World Value
           Survey, and Pew Global Attitudes Survey.")
-    )
+    ),
+      sidebarPanel(
+        img(src = "office.gif", width = "250px")
+      )
 )
 
 page_two <- tabPanel(
@@ -70,13 +73,37 @@ page_two <- tabPanel(
     plotOutput(outputId = "gdpData")
 )
 
+
+states <- mcd %>%
+             distinct(properties.subDivision) %>%
+             arrange(properties.subDivision)
+state_vec <- states$properties.subDivision
+
+data$state_abb <- state.abb[match(data$State, state.name)]
+
 page_three <- tabPanel(
     "McDonald's",
     titlePanel("McDonald's"),
+    sidebarLayout(
+      sidebarPanel(
+        selectInput(
+          inputId = "states",
+          label = "Pick a state!",
+          choices = state_vec
+        ),
+        textOutput(outputId = "numStates"),
+        textOutput(outputId = "stateRank"),
+        textOutput(outputId = "stateHappiness"),
+        img(src = "dankronald.gif", width = "250px")
+      ),
     mainPanel(
       leafletOutput(outputId = "mcd_map")
     )
+    ## output$states -> display only 
+    # display happiness rating of state, num mcdonalds
+    )
 )
+    
 
 page_four <- tabPanel(
     "Life Expectancy",
@@ -127,15 +154,38 @@ ui <- navbarPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
+    output$numStates <- renderText({
+      return(paste0("# of McDonald's: ",
+              mcd %>% filter(properties.subDivision == input$states) %>%
+                tally()))
+    })
+    output$stateRank <- renderText({
+      return(paste0("State Ranking: ",
+              data %>% filter(state_abb == input$states) %>% pull(overall)))
+    })
+    output$stateHappiness <- renderText({
+      return(paste0("State Happiness Scores (based on various metrics): ",
+              data %>% filter(state_abb == input$states) %>% pull(totalScore),
+              "/100.00"))
+    })
+    output$ronald <- renderUI({
+      
+    })
     output$mcd_map <- renderLeaflet({
       
-      leaflet(data = mcd) %>%
+      temp <- mcd %>%
+        filter(properties.subDivision == input$states)
+      
+      leaflet(data = temp) %>%
         addProviderTiles("Stamen.TonerLite") %>%
         addCircleMarkers(
           lat = ~lat,
           lng = ~lon,
           radius = 0.05,
-          fillOpacity = 0.1,#color = "Reds"
+          fillOpacity = 0.1,
+          popup = paste(
+            "City:", mcd$properties.addressLine3)
+          #color = "Reds"
         )
     })
     
