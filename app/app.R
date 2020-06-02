@@ -81,14 +81,44 @@ page_three <- tabPanel(
 page_four <- tabPanel(
     "Life Expectancy",
     titlePanel("Life Expectancy"),
-    plotlyOutput("life_slider")
+    numericInput("zoomies",
+                "Choose a Year to see the Life Expectancy!",
+                1950,
+                1950,
+                2015,
+                1),
+    p("Life Expectancy In the Above Year:"),
+    textOutput("life_ex_year"),
+    plotlyOutput("life_slider"),
+    p("As the graph above demonstrates, the life expectancy has increased over
+      the years. This can likely be attributed to medicinal advances and easier
+      access to healthcare."),
+    plotOutput(outputId = "life_expectancy"),
+    p("As the graph above demonstrates, there is a noticeable trend that seems
+      to cluster the life expectancy higher as life satisfaction also increases.
+      There appears to be a positive correlation between life satisfaction and 
+      life expectancy from the graph.")
     
 )
 
 
 page_five <- tabPanel(
-    "pg5",
-    titlePanel("page 5")
+    "Summary",
+    titlePanel("Takeaways"),
+    p("The takeaways that can be derived from each question, by looking at the data analysis
+      present from the charts will be explained below:"),
+    tags$ul(
+      tags$li("For the first question revolving around the relationship between GDP and Life Satisfaction,
+              we were able to deduce"),
+      tags$li("For the second question revolving around the relationship between the number
+              of McDonalds and happiness, there appears to be no correlation. Despite what McDonalds
+              may advertise, their happy meals do not seem to provide any extra happiness."),
+      tags$li("For the third question revolving around the relationship between life expectancy
+              and life satisfaction, we were able to deduce that as life expectancy increased,
+              as did life satisfaction. We believe these two to be related as societies that
+              help their citizens to live longer generally have better amenities and services,
+              leading to a higher quality of life and thus higher life satisfaction.")
+    )
 )
 
 
@@ -143,25 +173,19 @@ server <- function(input, output) {
       df_filter <- ls_vs_le %>% #filter out na values and get rid of population
         filter(!is.na(Life.expectancy..years.)) %>%
         select(-Total.population..Gapminder.)
-      
       # group by country
       country_group <- df_filter %>%
         group_by(Entity)
-      
       # summary table of avg life expectancy of each country
       avg_life_exp <- country_group %>%
         summarize(avg_life_exp = mean(Life.expectancy..years., na.rm = TRUE))
-      
       # group by year
       year_group <- df_filter %>%
         group_by(Year)
-      
       # summary table of life expectancy per year, all countries combined
       life_exp_per_year <- year_group %>%
         summarize(avg_life_exp = mean(Life.expectancy..years.))
-      
       y <- list(title = "Average Life Expectancy")
-      
       plot_ly(life_exp_per_year,
               x = ~Year, y = ~avg_life_exp, mode = "line",
               text = ~ paste(
@@ -172,7 +196,35 @@ server <- function(input, output) {
       ) %>%
         layout(yaxis = y, title = "Average Life Expectancy Over The Years")
     })
-    
+    output$life_ex_year <- renderText({
+      ls_vs_le %>% filter(!is.na(Life.expectancy..years.)) %>%
+        select(-Total.population..Gapminder.) %>% 
+        group_by(Year) %>% 
+        summarize(avg_life_exp = mean(Life.expectancy..years., na.rm = TRUE)) %>% 
+        filter(Year == input$zoomies) %>% 
+        pull(2) %>% 
+        round(2)
+    })
+    output$life_expectancy <- renderPlot({
+      # Filters the initial dataframe to preserve only useful data
+      df_filter <- ls_vs_le %>%
+        filter(!is.na(
+          Life.satisfaction..measured.from.lowest.0.to.highest.10.on.Cantril.Ladder.
+        )) %>%
+        filter(!is.na(Life.expectancy..years.)) %>%
+        select(-Total.population..Gapminder.)
+      
+      # Generates the boxplot based on data
+      plot <- ggplot(data = df_filter, aes(group = Entity,
+              x =
+  Life.satisfaction..measured.from.lowest.0.to.highest.10.on.Cantril.Ladder.,
+                                           y = Life.expectancy..years.)) +
+        geom_boxplot() +
+        labs(x = "Life Satisfaction",
+             y = "Life Expectancy", title = "Ranges of Life Expectancy Per Life
+            Satisfaction")
+      print(plot)
+    })
     
     # output$distPlot <- renderPlot({
     #     # generate bins based on input$bins from ui.R
