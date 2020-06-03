@@ -6,7 +6,7 @@
 #
 #    http://shiny.rstudio.com/
 #
-
+library(shinythemes)
 library(shiny)
 library(dplyr)
 library(leaflet)
@@ -57,7 +57,7 @@ page_one <- tabPanel(
         p("The link above is referencing the data set that we used to explore the second question.
           This data set was obtained from a kaggle user that gathered the data himself."),
         p(strong("3. How does the life expectancy per country relate to the levels of happiness across the globe?")),
-        a("Life expenctancy Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/life-satisfaction-vs-life-expectancy.csv"),
+        a("Life Expectancy Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/life-satisfaction-vs-life-expectancy.csv"),
         p("The link above is referencing the data set that we used to explore the third question.
           This data set was obtained from the World Happiness Report, European Commission, World Value
           Survey, and Pew Global Attitudes Survey.")
@@ -167,7 +167,7 @@ page_five <- tabPanel(
 
 # Define UI for application that draws a histogram
 # Multi-page layout??
-ui <- navbarPage(
+ui <- navbarPage( theme = shinytheme("united"),
     "Happiness or smthing",
     page_one,
     page_two,
@@ -231,7 +231,6 @@ server <- function(input, output) {
     
     new_gdp <- gdp_data %>% 
       select(State, sums) %>% 
-      filter(State != "District of Columbia") %>% 
       arrange(State)
   
     new_data <- data %>% 
