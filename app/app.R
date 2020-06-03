@@ -110,7 +110,10 @@ page_three <- tabPanel(
       plotlyOutput(outputId = "mcd_scatter"),
       p("As you can see by flipping through the various states, the number
       of McDonalds doesn't seem to have any correlation to the happiness levels
-      in each state. A clear example of this is Utah and West Virginia.")
+      in each state. A clear example of this is Utah and West Virginia. In addition,
+      the scatterplot above demonstrates that there is no distinct positive or 
+      negative correlation, leading us to conclude that there is no relationship
+      between the number of McDonalds and happiness levels.")
     )
     )
 )
@@ -152,7 +155,13 @@ page_five <- tabPanel(
       present from the charts will be explained below:"),
     tags$ul(
       tags$li("For the first question revolving around the relationship between GDP and Life Satisfaction,
-              we were able to deduce"),
+              we were able to deduce that there is no real relationship between GDP and life satsifaction.
+              There is a mild positive correlation between the two (very weak), which you could theoretically
+              attribute to the relationship between financially successful states potentially having more resources,
+              thus better accomodating their citizens. But this doesn't seem to be the case in general, as
+              the relationship seems to be rather weak. For example, the GDP difference between North Dakota
+              and West Virginia is xxx, however, their difference in life satisfaction is 32.2 (on a scale of 100)
+              which shows how a massive disparity in life satisfaction has no real relationship to GDP."),
       tags$li("For the second question revolving around the relationship between the number
               of McDonalds and happiness, there appears to be no correlation. Despite what McDonalds
               may advertise, their happy meals do not seem to provide any extra happiness. To display
