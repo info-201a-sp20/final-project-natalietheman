@@ -67,6 +67,14 @@ page_one <- tabPanel(
       )
 )
 
+q1 <- as.numeric(gsub(",","",gdp_data$X2018Q1))
+q2 <- as.numeric(gsub(",","",gdp_data$X2018Q2))
+q3 <- as.numeric(gsub(",","",gdp_data$X2018Q3))
+q4 <- as.numeric(gsub(",","",gdp_data$X2018Q4))
+
+gdp <- q1 + q2 + q3 + q4
+gdp_data$sums <- gdp
+
 page_two <- tabPanel(
     "GDP",
     titlePanel("GDP"),
@@ -97,7 +105,9 @@ page_three <- tabPanel(
         img(src = "dankronald.gif", width = "250px")
       ),
     mainPanel(
-      leafletOutput(outputId = "mcd_map")
+      leafletOutput(outputId = "mcd_map"),
+      p(),
+      plotlyOutput(outputId = "mcd_scatter")
     )
     ## output$states -> display only 
     # display happiness rating of state, num mcdonalds
@@ -149,6 +159,17 @@ page_five <- tabPanel(
 )
 
 
+state_group <- mcd %>%
+  group_by(properties.subDivision)
+mickey <- state_group %>%
+  summarize(num_mcd = n())
+colnames(mickey) <- c("state_abb", "num_mcd")
+
+donald <- data %>%
+  select(state_abb, totalScore)
+
+goofy <- full_join(mickey, donald, by = "state_abb")
+goofy <- na.omit(goofy)
 
 # Define UI for application that draws a histogram
 # Multi-page layout??
@@ -205,14 +226,6 @@ server <- function(input, output) {
         newData <- gdp_data %>% 
         newData
     })
-    
-    q1 <- as.numeric(gsub(",","",gdp_data$X2018Q1))
-    q2 <- as.numeric(gsub(",","",gdp_data$X2018Q2))
-    q3 <- as.numeric(gsub(",","",gdp_data$X2018Q3))
-    q4 <- as.numeric(gsub(",","",gdp_data$X2018Q4))
-
-    gdp <- q1 + q2 + q3 + q4
-    gdp_data$sums <- gdp
 
     output$mcd_map <- renderLeaflet({
       
@@ -230,6 +243,16 @@ server <- function(input, output) {
             "City:", mcd$properties.addressLine3)
           #color = "Reds"
         )
+    })
+    
+    output$mcd_scatter <- renderPlotly({
+      plot <- plot_ly(data = goofy, x=~totalScore, y=~num_mcd,
+            type="scatter", mode="markers") %>%
+        add_trace(text=goofy$state_abb, hoverinfo = "text", showlegend=F) %>%
+            layout(xaxis=list(title="Happiness Score"),
+                   yaxis=list(title="Number of McDonald's"),
+                   title="Number of McDonald's per state vs. Happiness Score")
+      plot
     })
     
     output$life_slider <- renderPlotly({

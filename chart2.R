@@ -47,3 +47,4 @@ plot_ly(avg,
   layout(title = "Avg Life Expectancy vs. Avg Life Satisfaction",
          xaxis = x, yaxis = y)
 }
+
