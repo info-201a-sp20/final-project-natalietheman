@@ -12,6 +12,7 @@ library(dplyr)
 library(leaflet)
 library(stringr)
 library(plotly)
+library(rsconnect)
 
 # source("../return_sum_info.R", chdir = TRUE)
 data <- read.csv("data/data.csv", stringsAsFactors = FALSE)
