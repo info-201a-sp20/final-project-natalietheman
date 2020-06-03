@@ -78,10 +78,29 @@ gdp <- q1 + q2 + q3 + q4
 gdp_data$sums <- gdp
 
 # page two
+spongebob <- gdp_data %>% select(State, sums)
+patrick <- data %>% select(State, totalScore)
+squidward <- full_join(spongebob, patrick, by = "State")
+
 page_two <- tabPanel(
     "GDP",
     titlePanel("GDP"),
-    plotOutput(outputId = "gdpData")
+    sidebarLayout(
+      sidebarPanel(
+        selectInput(
+          inputId = "gdpstates",
+          label = "Pick a state!",
+          choices = state.name
+        ),
+        textOutput(outputId = "stateGdp"),
+        textOutput(outputId = "stateRankGDP"),
+        textOutput(outputId = "stateRankHappiness"),
+        textOutput(outputId = "stateHappiness2")
+      ),
+      mainPanel(
+        plotlyOutput(outputId = "gdpData")
+      )
+  )
 )
 
 
@@ -104,7 +123,7 @@ page_three <- tabPanel(
           label = "Pick a state!",
           choices = state_vec
         ),
-        textOutput(outputId = "numStates"),
+        textOutput(outputId = "numMcD"),
         textOutput(outputId = "stateRank"),
         textOutput(outputId = "stateHappiness"),
         img(src = "dankronald.gif", width = "250px")
@@ -211,7 +230,27 @@ ui <- navbarPage( theme = shinytheme("united"),
 
 # Define server logic for all plots
 server <- function(input, output) {
-    output$numStates <- renderText({
+    output$stateGdp <- renderText({
+      return(paste0("GDP: $", gdp_data %>% filter(State == input$gdpstates) %>%
+               pull(sums)))
+    })
+    
+    output$stateRankGDP <- renderText({
+      return(paste0("State GDP Rank: ", gdp_data %>%
+                      arrange(-sums) %>% mutate(id = row_number()) %>%
+                      filter(State == input$gdpstates) %>% pull(id)))
+    })
+      
+    output$stateRankHappiness <- renderText({
+      return(paste0("State Happiness Rank: ", data %>%
+                      filter(State == input$gdpstates) %>% pull(overall)))
+    })
+    
+    output$stateHappiness2 <- renderText({
+      
+    })
+  
+    output$numMcD <- renderText({
       return(paste0("# of McDonald's: ",
               mcd %>% filter(properties.subDivision == input$states) %>%
                 tally()))
@@ -231,10 +270,19 @@ server <- function(input, output) {
     output$ronald <- renderUI({
       
     })
-    
+
     output$gdpData <- renderTable({
         newData <- gdp_data %>% 
         newData
+    })
+    
+    output$gdpData <- renderPlotly({
+        plot <- plot_ly(squidward, x = ~totalScore, y = ~sums, type = "scatter") %>%
+          add_trace(text = squidward$State, hoverinfo = "text",showlegend = F) %>%
+          layout(xaxis = list(title = "Happiness Score"),
+                 yaxis = list(title = "GDP"),
+                 title = "GDP per State vs. Happiness Score")
+        plot
     })
     
     new_gdp <- gdp_data %>% 
