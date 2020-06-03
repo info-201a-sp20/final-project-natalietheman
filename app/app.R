@@ -213,6 +213,18 @@ server <- function(input, output) {
 
     gdp <- q1 + q2 + q3 + q4
     gdp_data$sums <- gdp
+    
+    new_gdp <- gdp_data %>% 
+      select(State, sums) %>% 
+      filter(State != "District of Columbia") %>% 
+      arrange(State)
+  
+    new_data <- data %>% 
+      select(State, totalScore) %>% 
+      arrange(State)
+    
+    newTable <- full_join(new_gdp, new_data)
+    
 
     output$mcd_map <- renderLeaflet({
       
