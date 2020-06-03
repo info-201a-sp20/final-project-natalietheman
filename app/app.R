@@ -6,7 +6,7 @@
 #
 #    http://shiny.rstudio.com/
 #
-
+library(shinythemes)
 library(shiny)
 library(dplyr)
 library(leaflet)
@@ -57,7 +57,7 @@ page_one <- tabPanel(
         p("The link above is referencing the data set that we used to explore the second question.
           This data set was obtained from a kaggle user that gathered the data himself."),
         p(strong("3. How does the life expectancy per country relate to the levels of happiness across the globe?")),
-        a("Life expenctancy Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/life-satisfaction-vs-life-expectancy.csv"),
+        a("Life Expectancy Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/life-satisfaction-vs-life-expectancy.csv"),
         p("The link above is referencing the data set that we used to explore the third question.
           This data set was obtained from the World Happiness Report, European Commission, World Value
           Survey, and Pew Global Attitudes Survey.")
@@ -107,12 +107,15 @@ page_three <- tabPanel(
     mainPanel(
       leafletOutput(outputId = "mcd_map"),
       p(),
-      plotlyOutput(outputId = "mcd_scatter")
+      plotlyOutput(outputId = "mcd_scatter"),
+      p("As you can see by flipping through the various states, the number
+      of McDonalds doesn't seem to have any correlation to the happiness levels
+      in each state. A clear example of this is Utah and West Virginia.")
     )
-    ## output$states -> display only 
-    # display happiness rating of state, num mcdonalds
     )
 )
+    ## output$states -> display only 
+    # display happiness rating of state, num mcdonalds
     
 
 page_four <- tabPanel(
@@ -129,12 +132,15 @@ page_four <- tabPanel(
     plotlyOutput("life_slider"),
     p("As the graph above demonstrates, the life expectancy has increased over
       the years. This can likely be attributed to medicinal advances and easier
-      access to healthcare."),
+      access to healthcare. As societies progress, life expectancy has increased
+      which will likely lead to an increase in life satisfaction as well."),
     plotOutput(outputId = "life_expectancy"),
     p("As the graph above demonstrates, there is a noticeable trend that seems
       to cluster the life expectancy higher as life satisfaction also increases.
       There appears to be a positive correlation between life satisfaction and 
-      life expectancy from the graph.")
+      life expectancy from the graph. There are obviously outliers such as the boxplot
+      near 5.075 which reaches the range of 70-74 years for a relatively low life
+      satisfaction, however, this does not detract from the overall positive correlation.")
     
 )
 
@@ -149,12 +155,20 @@ page_five <- tabPanel(
               we were able to deduce"),
       tags$li("For the second question revolving around the relationship between the number
               of McDonalds and happiness, there appears to be no correlation. Despite what McDonalds
-              may advertise, their happy meals do not seem to provide any extra happiness."),
+              may advertise, their happy meals do not seem to provide any extra happiness. To display
+              this lack of relationship, we can take the example states of Utah and West Virginia, who are 
+              respectively the 2nd and 50th ranked states in terms of happiness. In Utah, the number of McDonalds
+              is 116 whereas in West Virginia the number of McDonalds is 104, showing a difference of 12
+              McDonalds restaurants. This disparity is relatively small and not large enough to show a relationship
+              between the number of McDonalds and happiness levels."),
       tags$li("For the third question revolving around the relationship between life expectancy
               and life satisfaction, we were able to deduce that as life expectancy increased,
               as did life satisfaction. We believe these two to be related as societies that
               help their citizens to live longer generally have better amenities and services,
-              leading to a higher quality of life and thus higher life satisfaction.")
+              leading to a higher quality of life and thus higher life satisfaction. If we were to look
+              at the boxplot near 5.075 in terms of life satisfaction, we can see that it has a life
+              expectancy range near 70-74 years, which is an outlier but it does not detract from
+              the overall positive linear trend of life satisfaction and life expectancy both increasing.")
     )
 )
 
@@ -173,7 +187,7 @@ goofy <- na.omit(goofy)
 
 # Define UI for application that draws a histogram
 # Multi-page layout??
-ui <- navbarPage(
+ui <- navbarPage( theme = shinytheme("united"),
     "Happiness or smthing",
     page_one,
     page_two,
@@ -226,6 +240,24 @@ server <- function(input, output) {
         newData <- gdp_data %>% 
         newData
     })
+    
+    q1 <- as.numeric(gsub(",","",gdp_data$X2018Q1))
+    q2 <- as.numeric(gsub(",","",gdp_data$X2018Q2))
+    q3 <- as.numeric(gsub(",","",gdp_data$X2018Q3))
+    q4 <- as.numeric(gsub(",","",gdp_data$X2018Q4))
+
+    gdp <- q1 + q2 + q3 + q4
+    gdp_data$sums <- gdp
+    
+    new_gdp <- gdp_data %>% 
+      select(State, sums) %>% 
+      arrange(State)
+  
+    new_data <- data %>% 
+      select(State, totalScore) %>% 
+      arrange(State)
+    
+    newTable <- full_join(new_gdp, new_data)
 
     output$mcd_map <- renderLeaflet({
       
