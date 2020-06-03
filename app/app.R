@@ -97,8 +97,12 @@ page_three <- tabPanel(
         img(src = "dankronald.gif", width = "250px")
       ),
     mainPanel(
-      leafletOutput(outputId = "mcd_map")
+      leafletOutput(outputId = "mcd_map"),
+      p("As you can see by flipping through the various states, the number
+      of McDonalds doesn't seem to have any correlation to the happiness levels
+      in each state. A clear example of this is Utah and West Virginia.")
     )
+    
     ## output$states -> display only 
     # display happiness rating of state, num mcdonalds
     )
@@ -119,12 +123,15 @@ page_four <- tabPanel(
     plotlyOutput("life_slider"),
     p("As the graph above demonstrates, the life expectancy has increased over
       the years. This can likely be attributed to medicinal advances and easier
-      access to healthcare."),
+      access to healthcare. As societies progress, life expectancy has increased
+      which will likely lead to an increase in life satisfaction as well."),
     plotOutput(outputId = "life_expectancy"),
     p("As the graph above demonstrates, there is a noticeable trend that seems
       to cluster the life expectancy higher as life satisfaction also increases.
       There appears to be a positive correlation between life satisfaction and 
-      life expectancy from the graph.")
+      life expectancy from the graph. There are obviously outliers such as the boxplot
+      near 5.075 which reaches the range of 70-74 years for a relatively low life
+      satisfaction, however, this does not detract from the overall positive correlation.")
     
 )
 
@@ -139,12 +146,20 @@ page_five <- tabPanel(
               we were able to deduce"),
       tags$li("For the second question revolving around the relationship between the number
               of McDonalds and happiness, there appears to be no correlation. Despite what McDonalds
-              may advertise, their happy meals do not seem to provide any extra happiness."),
+              may advertise, their happy meals do not seem to provide any extra happiness. To display
+              this lack of relationship, we can take the example states of Utah and West Virginia, who are 
+              respectively the 2nd and 50th ranked states in terms of happiness. In Utah, the number of McDonalds
+              is 116 whereas in West Virginia the number of McDonalds is 104, showing a difference of 12
+              McDonalds restaurants. This disparity is relatively small and not large enough to show a relationship
+              between the number of McDonalds and happiness levels."),
       tags$li("For the third question revolving around the relationship between life expectancy
               and life satisfaction, we were able to deduce that as life expectancy increased,
               as did life satisfaction. We believe these two to be related as societies that
               help their citizens to live longer generally have better amenities and services,
-              leading to a higher quality of life and thus higher life satisfaction.")
+              leading to a higher quality of life and thus higher life satisfaction. If we were to look
+              at the boxplot near 5.075 in terms of life satisfaction, we can see that it has a life
+              expectancy range near 70-74 years, which is an outlier but it does not detract from
+              the overall positive linear trend of life satisfaction and life expectancy both increasing.")
     )
 )
 
