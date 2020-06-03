@@ -49,24 +49,26 @@ page_one <- tabPanel(
     mainPanel(
         h1("Questions"),
         p(strong("1. How does GDP per capita relate to happiness within the United States?")),
-        a("GDP Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/gdpPerState.csv"),
-        p("The link above is referencing the data set that we used to explore the first question.
+        p("The link below references the dataset that we used to explore the first question.
           This data set was obtained from the United States Bureau of Economic Analysis."),
+        a("GDP Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/gdpPerState.csv"),
+      
         p(strong("2. How does the number of McDonald's relate to happiness within the United States?")),
-        a("McDonalds Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/McDonalds.csv"),
-        p("The link above is referencing the data set that we used to explore the second question.
+        p("The link below references the data set that we used to explore the second question.
           This data set was obtained from a kaggle user that gathered the data himself."),
+        a("McDonalds Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/McDonalds.csv"),
         p(strong("3. How does the life expectancy per country relate to the levels of happiness across the globe?")),
-        a("Life Expectancy Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/life-satisfaction-vs-life-expectancy.csv"),
-        p("The link above is referencing the data set that we used to explore the third question.
+        p("The link below references the data set that we used to explore the third question.
           This data set was obtained from the World Happiness Report, European Commission, World Value
-          Survey, and Pew Global Attitudes Survey.")
+          Survey, and Pew Global Attitudes Survey."),
+        a("Life Expectancy Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/life-satisfaction-vs-life-expectancy.csv"),
     ),
       sidebarPanel(
         img(src = "office.gif", width = "250px")
       )
 )
 
+# remove commas from numbers to convert to numeric and calculate sum for each state
 q1 <- as.numeric(gsub(",","",gdp_data$X2018Q1))
 q2 <- as.numeric(gsub(",","",gdp_data$X2018Q2))
 q3 <- as.numeric(gsub(",","",gdp_data$X2018Q3))
@@ -75,6 +77,7 @@ q4 <- as.numeric(gsub(",","",gdp_data$X2018Q4))
 gdp <- q1 + q2 + q3 + q4
 gdp_data$sums <- gdp
 
+# page two
 page_two <- tabPanel(
     "GDP",
     titlePanel("GDP"),
@@ -82,6 +85,7 @@ page_two <- tabPanel(
 )
 
 
+# mcd df filter
 states <- mcd %>%
              distinct(properties.subDivision) %>%
              arrange(properties.subDivision)
@@ -89,6 +93,7 @@ state_vec <- states$properties.subDivision
 
 data$state_abb <- state.abb[match(data$State, state.name)]
 
+# page three
 page_three <- tabPanel(
     "McDonald's",
     titlePanel("McDonald's"),
@@ -109,7 +114,7 @@ page_three <- tabPanel(
       p(),
       plotlyOutput(outputId = "mcd_scatter"),
       p("As you can see by flipping through the various states, the number
-      of McDonalds doesn't seem to have any correlation to the happiness levels
+      of McDonald's doesn't seem to have any correlation to the happiness levels
       in each state. A clear example of this is Utah and West Virginia.")
     )
     )
@@ -117,12 +122,12 @@ page_three <- tabPanel(
     ## output$states -> display only 
     # display happiness rating of state, num mcdonalds
     
-
+# page four
 page_four <- tabPanel(
     "Life Expectancy",
     titlePanel("Life Expectancy"),
     numericInput("zoomies",
-                "Choose a Year to see the Life Expectancy!",
+                "Choose a Year between 1950 - 2015 to see the Life Expectancy!",
                 1950,
                 1950,
                 2015,
@@ -141,15 +146,14 @@ page_four <- tabPanel(
       life expectancy from the graph. There are obviously outliers such as the boxplot
       near 5.075 which reaches the range of 70-74 years for a relatively low life
       satisfaction, however, this does not detract from the overall positive correlation.")
-    
 )
 
-
+# page five
 page_five <- tabPanel(
     "Summary",
     titlePanel("Takeaways"),
-    p("The takeaways that can be derived from each question, by looking at the data analysis
-      present from the charts will be explained below:"),
+    p("Looking at the data analysis present from the charts, the takeaways that can
+      be derived from each question are explained below:"),
     tags$ul(
       tags$li("For the first question revolving around the relationship between GDP and Life Satisfaction,
               we were able to deduce"),
