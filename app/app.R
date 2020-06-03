@@ -95,7 +95,12 @@ page_two <- tabPanel(
         textOutput(outputId = "stateHappiness2")
       ),
       mainPanel(
-        plotlyOutput(outputId = "gdpData")
+        plotlyOutput(outputId = "gdpData"),
+        p("As you can see from the plot above, there's generally no correlation, but
+          maybe an argueably weak positive correlation between happiness score and GDP.
+          If you were to look at North Dakota and West Virginia, you can see the disparity
+          of happiness score, yet note how small a difference exists in the GDP. This example
+          seems to not be out of the ordinary as GDP doesn't seem to dictate happiness score much.")
       )
   )
 )
@@ -179,7 +184,7 @@ page_five <- tabPanel(
               attribute to the relationship between financially successful states potentially having more resources,
               thus better accomodating their citizens. But this doesn't seem to be the case in general, as
               the relationship seems to be rather weak. For example, the GDP difference between North Dakota
-              and West Virginia is xxx, however, their difference in life satisfaction is 32.2 (on a scale of 100)
+              and West Virginia is 85,422 (which is rather small), however, their difference in life satisfaction is 32.2 (on a scale of 100)
               which shows how a massive disparity in life satisfaction has no real relationship to GDP."),
       tags$li("For the second question revolving around the relationship between the number
               of McDonalds and happiness, there appears to be no correlation. Despite what McDonalds
@@ -250,14 +255,7 @@ ui <- navbarPage( theme = shinytheme("united"),
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   
- ;
-  ;
-  ;
-  ;
-  ;
-  ;
-  ;
-  
+ 
   
     output$stateGdp <- renderText({
       return(paste0("GDP: $", gdp_data %>% filter(State == input$gdpstates) %>%
