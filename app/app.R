@@ -49,24 +49,26 @@ page_one <- tabPanel(
     mainPanel(
         h1("Questions"),
         p(strong("1. How does GDP per capita relate to happiness within the United States?")),
-        a("GDP Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/gdpPerState.csv"),
-        p("The link above is referencing the data set that we used to explore the first question.
+        p("The link below references the dataset that we used to explore the first question.
           This data set was obtained from the United States Bureau of Economic Analysis."),
+        a("GDP Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/gdpPerState.csv"),
+      
         p(strong("2. How does the number of McDonald's relate to happiness within the United States?")),
-        a("McDonalds Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/McDonalds.csv"),
-        p("The link above is referencing the data set that we used to explore the second question.
+        p("The link below references the data set that we used to explore the second question.
           This data set was obtained from a kaggle user that gathered the data himself."),
+        a("McDonald's Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/McDonalds.csv"),
         p(strong("3. How does the life expectancy per country relate to the levels of happiness across the globe?")),
-        a("Life Expectancy Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/life-satisfaction-vs-life-expectancy.csv"),
-        p("The link above is referencing the data set that we used to explore the third question.
+        p("The link below references the data set that we used to explore the third question.
           This data set was obtained from the World Happiness Report, European Commission, World Value
-          Survey, and Pew Global Attitudes Survey.")
+          Survey, and Pew Global Attitudes Survey."),
+        a("Life Expectancy Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/life-satisfaction-vs-life-expectancy.csv"),
     ),
       sidebarPanel(
         img(src = "office.gif", width = "250px")
       )
 )
 
+# remove commas from numbers to convert to numeric and calculate sum for each state
 q1 <- as.numeric(gsub(",","",gdp_data$X2018Q1))
 q2 <- as.numeric(gsub(",","",gdp_data$X2018Q2))
 q3 <- as.numeric(gsub(",","",gdp_data$X2018Q3))
@@ -75,9 +77,10 @@ q4 <- as.numeric(gsub(",","",gdp_data$X2018Q4))
 gdp <- q1 + q2 + q3 + q4
 gdp_data$sums <- gdp
 
+# page two
 spongebob <- gdp_data %>% select(State, sums)
 patrick <- data %>% select(State, totalScore)
-squidward <- full_join(spongebob, patrick, by="State")
+squidward <- full_join(spongebob, patrick, by = "State")
 
 page_two <- tabPanel(
     "GDP",
@@ -106,6 +109,7 @@ page_two <- tabPanel(
 )
 
 
+# mcd df filter
 states <- mcd %>%
              distinct(properties.subDivision) %>%
              arrange(properties.subDivision)
@@ -113,6 +117,7 @@ state_vec <- states$properties.subDivision
 
 data$state_abb <- state.abb[match(data$State, state.name)]
 
+# page three
 page_three <- tabPanel(
     "McDonald's",
     titlePanel("McDonald's"),
@@ -133,23 +138,23 @@ page_three <- tabPanel(
       p(),
       plotlyOutput(outputId = "mcd_scatter"),
       p("As you can see by flipping through the various states, the number
-      of McDonalds doesn't seem to have any correlation to the happiness levels
+      of McDonald's doesn't seem to have any correlation to the happiness levels
       in each state. A clear example of this is Utah and West Virginia. In addition,
       the scatterplot above demonstrates that there is no distinct positive or 
       negative correlation, leading us to conclude that there is no relationship
-      between the number of McDonalds and happiness levels.")
+      between the number of McDonald's and happiness levels.")
     )
     )
 )
     ## output$states -> display only 
     # display happiness rating of state, num mcdonalds
     
-
+# page four
 page_four <- tabPanel(
     "Life Expectancy",
     titlePanel("Life Expectancy"),
     numericInput("zoomies",
-                "Choose a Year to see the Life Expectancy!",
+                "Choose a Year between 1950 - 2015 to see the Life Expectancy!",
                 1950,
                 1950,
                 2015,
@@ -168,17 +173,16 @@ page_four <- tabPanel(
       life expectancy from the graph. There are obviously outliers such as the boxplot
       near 5.075 which reaches the range of 70-74 years for a relatively low life
       satisfaction, however, this does not detract from the overall positive correlation.")
-    
 )
 
-
+# page five
 page_five <- tabPanel(
     "Summary",
     titlePanel("Takeaways"),
-    p("The takeaways that can be derived from each question, by looking at the data analysis
-      present from the charts will be explained below:"),
+    p("Looking at the data analysis present from the charts, the takeaways that can
+      be derived from each question are explained below:"),
     tags$ul(
-      tags$li("For the first question revolving around the relationship between GDP and Life Satisfaction,
+      tags$li("For the first question revolving around the relationship between GDP and life satisfaction,
               we were able to deduce that there is no real relationship between GDP and life satsifaction.
               There is a mild positive correlation between the two (very weak), which you could theoretically
               attribute to the relationship between financially successful states potentially having more resources,
@@ -187,13 +191,13 @@ page_five <- tabPanel(
               and West Virginia is 85,422 (which is rather small), however, their difference in life satisfaction is 32.2 (on a scale of 100)
               which shows how a massive disparity in life satisfaction has no real relationship to GDP."),
       tags$li("For the second question revolving around the relationship between the number
-              of McDonalds and happiness, there appears to be no correlation. Despite what McDonalds
+              of McDonald's and happiness, there appears to be no correlation. Despite what McDonald's
               may advertise, their happy meals do not seem to provide any extra happiness. To display
               this lack of relationship, we can take the example states of Utah and West Virginia, who are 
-              respectively the 2nd and 50th ranked states in terms of happiness. In Utah, the number of McDonalds
-              is 116 whereas in West Virginia the number of McDonalds is 104, showing a difference of 12
-              McDonalds restaurants. This disparity is relatively small and not large enough to show a relationship
-              between the number of McDonalds and happiness levels."),
+              respectively the 2nd and 50th ranked states in terms of happiness. In Utah, the number of McDonald's
+              is 116 whereas in West Virginia the number of McDonald's is 104, showing a difference of 12
+              McDonald's restaurants. This disparity is relatively small and not large enough to show a relationship
+              between the number of McDonald's and happiness levels."),
       tags$li("For the third question revolving around the relationship between life expectancy
               and life satisfaction, we were able to deduce that as life expectancy increased,
               as did life satisfaction. We believe these two to be related as societies that
@@ -205,7 +209,7 @@ page_five <- tabPanel(
     )
 )
 
-
+# reorganize mcd info
 state_group <- mcd %>%
   group_by(properties.subDivision)
 mickey <- state_group %>%
@@ -228,35 +232,13 @@ ui <- navbarPage( theme = shinytheme("united"),
     page_four,
     page_five
 )
-# 
-# 
-#     # Application title
-#     titlePanel("Happiness wooo"),
-# 
-#     # Sidebar with a slider input for number of bins
-#     sidebarLayout(
-#         sidebarPanel(
-#             sliderInput("bins",
-#                         "Number of bins:",
-#                         min = 1,
-#                         max = 50,
-#                         value = 30)
-#         ),
-# 
-#         # Show a plot of the generated distribution
-#         mainPanel(
-#            plotOutput("distPlot")
-#         )
-#     )
-# )
 
-
-
-# Define server logic required to draw a histogram
+# Define server logic for all plots
 server <- function(input, output) {
-  
+
  
   
+
     output$stateGdp <- renderText({
       return(paste0("GDP: $", gdp_data %>% filter(State == input$gdpstates) %>%
                pull(sums)))
@@ -264,7 +246,7 @@ server <- function(input, output) {
     
     output$stateRankGDP <- renderText({
       return(paste0("State GDP Rank: ", gdp_data %>%
-                      arrange(-sums) %>% mutate(id=row_number()) %>%
+                      arrange(-sums) %>% mutate(id = row_number()) %>%
                       filter(State == input$gdpstates) %>% pull(id)))
     })
       
@@ -282,24 +264,33 @@ server <- function(input, output) {
               mcd %>% filter(properties.subDivision == input$states) %>%
                 tally()))
     })
+    
     output$stateRank <- renderText({
       return(paste0("State Ranking: ",
               data %>% filter(state_abb == input$states) %>% pull(overall)))
     })
+    
     output$stateHappiness <- renderText({
       return(paste0("State Happiness Scores (based on various metrics): ",
               data %>% filter(state_abb == input$states) %>% pull(totalScore),
               "/100.00"))
     })
+    
     output$ronald <- renderUI({
       
     })
+
+    output$gdpData <- renderTable({
+        newData <- gdp_data %>% 
+        newData
+    })
+    
     output$gdpData <- renderPlotly({
-        plot <- plot_ly(squidward, x=~totalScore, y=~sums, type="scatter") %>%
-          add_trace(text=squidward$State, hoverinfo="text",showlegend=F) %>%
-          layout(xaxis=list(title="Happiness Score"),
-                 yaxis=list(title="GDP"),
-                 title="GDP per State vs. Happiness Score")
+        plot <- plot_ly(squidward, x = ~totalScore, y = ~sums, type = "scatter") %>%
+          add_trace(text = squidward$State, hoverinfo = "text",showlegend = F) %>%
+          layout(xaxis = list(title = "Happiness Score"),
+                 yaxis = list(title = "GDP"),
+                 title = "GDP per State vs. Happiness Score")
         plot
     })
     
@@ -332,12 +323,12 @@ server <- function(input, output) {
     })
     
     output$mcd_scatter <- renderPlotly({
-      plot <- plot_ly(data = goofy, x=~totalScore, y=~num_mcd,
-            type="scatter", mode="markers") %>%
-        add_trace(text=goofy$state_abb, hoverinfo = "text", showlegend=F) %>%
-            layout(xaxis=list(title="Happiness Score"),
-                   yaxis=list(title="Number of McDonald's"),
-                   title="Number of McDonald's per state vs. Happiness Score")
+      plot <- plot_ly(data = goofy, x = ~totalScore, y = ~num_mcd,
+            type = "scatter", mode = "markers") %>%
+        add_trace(text = goofy$state_abb, hoverinfo = "text", showlegend = F) %>%
+            layout(xaxis = list(title = "Happiness Score"),
+                   yaxis = list(title = "Number of McDonald's"),
+                   title = "Number of McDonald's per state vs. Happiness Score")
       plot
     })
     
@@ -368,6 +359,7 @@ server <- function(input, output) {
       ) %>%
         layout(yaxis = y, title = "Average Life Expectancy Over The Years")
     })
+    
     output$life_ex_year <- renderText({
       ls_vs_le %>% filter(!is.na(Life.expectancy..years.)) %>%
         select(-Total.population..Gapminder.) %>% 
@@ -377,6 +369,7 @@ server <- function(input, output) {
         pull(2) %>% 
         round(2)
     })
+    
     output$life_expectancy <- renderPlot({
       # Filters the initial dataframe to preserve only useful data
       df_filter <- ls_vs_le %>%
@@ -397,15 +390,6 @@ server <- function(input, output) {
             Satisfaction")
       print(plot)
     })
-    
-    # output$distPlot <- renderPlot({
-    #     # generate bins based on input$bins from ui.R
-    #     x    <- faithful[, 2]
-    #     bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    # 
-    #     # draw the histogram with the specified number of bins
-    #     hist(x, breaks = bins, col = 'darkgray', border = 'white')
-    # })
 }
 
 # Run the application 
