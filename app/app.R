@@ -13,7 +13,6 @@ library(leaflet)
 library(stringr)
 library(plotly)
 
-# source("../return_sum_info.R", chdir = TRUE)
 data <- read.csv("data/data.csv", stringsAsFactors = FALSE)
 gdp_data <- read.csv("data/gdpPerState.csv", stringsAsFactors = FALSE)
 mcd <- read.csv("data/McDonalds.csv")
@@ -400,6 +399,9 @@ server <- function(input, output) {
     #     hist(x, breaks = bins, col = 'darkgray', border = 'white')
     # })
 }
+
+source("app_server.R")
+source("app_ui.R")
 
 # Run the application 
 shinyApp(ui = ui, server = server)
