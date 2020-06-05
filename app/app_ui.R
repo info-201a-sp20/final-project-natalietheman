@@ -75,32 +75,37 @@ squidward <- full_join(spongebob, patrick, by = "State")
 
 page_two <- tabPanel(
   "GDP",
-  titlePanel("GDP"),
+  h1(id="gdp-heading", "GDP"),
+  tags$style(HTML("#gdp-heading{color: green;}")),
+  tags$head(tags$style(
+    HTML('
+         #gdp-sidebar {
+         background-color: #228B22;
+         }
+         
+         body, label, input, button, select { 
+         font-family: "Arial";
+         }')
+  )),
   sidebarLayout(
-    sidebarPanel(
-      selectInput(
-        inputId = "gdpstates",
-        label = "Pick a state!",
-        choices = state.name
-      ),
-      textOutput(outputId = "stateGdp"),
-      textOutput(outputId = "stateRankGDP"),
-      textOutput(outputId = "stateRankHappiness"),
-      textOutput(outputId = "stateHappiness2")
+    sidebarPanel(id="gdp-sidebar",
+                 selectInput(
+                   inputId = "gdpstates",
+                   label = "Pick a state!",
+                   choices = state.name
+                 ),
+                 textOutput(outputId = "stateGdp"),
+                 textOutput(outputId = "stateRankGDP"),
+                 textOutput(outputId = "stateRankHappiness"),
+                 textOutput(outputId = "stateHappiness2")
     ),
     mainPanel(
-      plotlyOutput(outputId = "gdpData"),
-      p("As you can see from the plot above, there's generally no correlation, but
-          maybe an argueably weak positive correlation between happiness score and GDP.
-          If you were to look at North Dakota and West Virginia, you can see the disparity
-          of happiness score, yet note how small a difference exists in the GDP. This example
-          seems to not be out of the ordinary as GDP doesn't seem to dictate happiness score much.")
+      plotlyOutput(outputId = "gdpData")
     )
   )
-)
+    )
 
 
-# mcd df filter
 states <- mcd %>%
   distinct(properties.subDivision) %>%
   arrange(properties.subDivision)
@@ -108,46 +113,55 @@ state_vec <- states$properties.subDivision
 
 data$state_abb <- state.abb[match(data$State, state.name)]
 
-# page three
 page_three <- tabPanel(
-  includeCSS("style.css"),
   "McDonald's",
-  h1(id="big-heading", "McDonald's"),
-  tags$style(HTML("#big-heading{color: red;}")),
+  h1(id="mcd-heading", "McDonald's"),
+  tags$style(HTML("#mcd-heading{color: red;}")),
+  tags$head(tags$style(
+    HTML('
+         #mcd-sidebar {
+         background-color: #dec4de;
+         }
+         
+         body, label, input, button, select { 
+         font-family: "Arial";
+         }')
+  )),
   sidebarLayout(
-    sidebarPanel(
-      selectInput(
-        inputId = "states",
-        label = "Pick a state!",
-        choices = state_vec
-      ),
-      textOutput(outputId = "numMcD"),
-      textOutput(outputId = "stateRank"),
-      textOutput(outputId = "stateHappiness"),
-      img(src = "dankronald.gif", width = "250px")
+    sidebarPanel(id="mcd-sidebar",
+                 selectInput(
+                   inputId = "states",
+                   label = "Pick a state!",
+                   choices = state_vec
+                 ),
+                 textOutput(outputId = "numMcD"),
+                 textOutput(outputId = "stateRank"),
+                 textOutput(outputId = "stateHappiness"),
+                 img(src = "dankronald.gif", width = "250px")
     ),
     mainPanel(
       leafletOutput(outputId = "mcd_map"),
       p(),
       plotlyOutput(outputId = "mcd_scatter"),
       p("As you can see by flipping through the various states, the number
-      of McDonald's doesn't seem to have any correlation to the happiness levels
-      in each state. A clear example of this is Utah and West Virginia. In addition,
-      the scatterplot above demonstrates that there is no distinct positive or 
-      negative correlation, leading us to conclude that there is no relationship
-      between the number of McDonald's and happiness levels.")
-    )
-  )
-)
+        of McDonalds doesn't seem to have any correlation to the happiness levels
+        in each state. A clear example of this is Utah and West Virginia. In addition,
+        the scatterplot above demonstrates that there is no distinct positive or 
+        negative correlation, leading us to conclude that there is no relationship
+        between the number of McDonalds and happiness levels.")
+      )
+      )
+      )
 ## output$states -> display only 
 # display happiness rating of state, num mcdonalds
 
-# page four
+
 page_four <- tabPanel(
   "Life Expectancy",
-  titlePanel("Life Expectancy"),
+  h1(id="life-heading", "Life Expectancy"),
+  tags$style(HTML("#life-heading{color: blue;}")),
   numericInput("zoomies",
-               "Choose a Year between 1950 - 2015 to see the Life Expectancy!",
+               "Choose a Year to see the Life Expectancy!",
                1950,
                1950,
                2015,
@@ -156,17 +170,18 @@ page_four <- tabPanel(
   textOutput("life_ex_year"),
   plotlyOutput("life_slider"),
   p("As the graph above demonstrates, the life expectancy has increased over
-      the years. This can likely be attributed to medicinal advances and easier
-      access to healthcare. As societies progress, life expectancy has increased
-      which will likely lead to an increase in life satisfaction as well."),
+    the years. This can likely be attributed to medicinal advances and easier
+    access to healthcare. As societies progress, life expectancy has increased
+    which will likely lead to an increase in life satisfaction as well."),
   plotOutput(outputId = "life_expectancy"),
   p("As the graph above demonstrates, there is a noticeable trend that seems
-      to cluster the life expectancy higher as life satisfaction also increases.
-      There appears to be a positive correlation between life satisfaction and 
-      life expectancy from the graph. There are obviously outliers such as the boxplot
-      near 5.075 which reaches the range of 70-74 years for a relatively low life
-      satisfaction, however, this does not detract from the overall positive correlation.")
-)
+    to cluster the life expectancy higher as life satisfaction also increases.
+    There appears to be a positive correlation between life satisfaction and 
+    life expectancy from the graph. There are obviously outliers such as the boxplot
+    near 5.075 which reaches the range of 70-74 years for a relatively low life
+    satisfaction, however, this does not detract from the overall positive correlation.")
+  
+  )
 
 # page five
 page_five <- tabPanel(
