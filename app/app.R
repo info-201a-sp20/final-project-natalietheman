@@ -5,18 +5,9 @@
 # Find out more about building applications with Shiny here:
 #
 #    http://shiny.rstudio.com/
-#
-library(shinythemes)
-library(shiny)
-library(dplyr)
-library(leaflet)
-library(stringr)
-library(plotly)
-library(rsconnect)
 
 source("app_server.R")
 source("app_ui.R")
 
 # Run the application 
 shinyApp(ui = ui, server = server)
-
