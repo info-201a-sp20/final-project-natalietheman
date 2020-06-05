@@ -5,10 +5,12 @@ library(leaflet)
 library(stringr)
 library(plotly)
 
-# source("../return_sum_info.R", chdir = TRUE)
+
 data <- read.csv("data/data.csv", stringsAsFactors = FALSE)
 gdp_data <- read.csv("data/gdpPerState.csv", stringsAsFactors = FALSE)
 mcd <- read.csv("data/McDonalds.csv")
+ls_vs_le <- read.csv("data/life-satisfaction-vs-life-expectancy.csv",
+                     stringsAsFactors = FALSE)
 
 coords <- strsplit(as.character(mcd$geometry.coordinates), ",")
 for (i in 1:length(coords)) {
@@ -28,11 +30,6 @@ longs <- as.numeric(longs)
 
 mcd <- mutate(mcd, lat = lats)
 mcd <- mutate(mcd, lon = longs)
-
-ls_vs_le <- read.csv("data/life-satisfaction-vs-life-expectancy.csv",
-                     stringsAsFactors = FALSE
-)
-
 
 # page one
 page_one <- tabPanel(
@@ -93,7 +90,6 @@ page_two <- tabPanel(
       textOutput(outputId = "stateGdp"),
       textOutput(outputId = "stateRankGDP"),
       textOutput(outputId = "stateRankHappiness"),
-      textOutput(outputId = "stateHappiness2")
     ),
     mainPanel(
       plotlyOutput(outputId = "gdpData"),
@@ -105,7 +101,6 @@ page_two <- tabPanel(
     )
   )
 )
-
 
 # mcd df filter
 states <- mcd %>%
@@ -144,8 +139,6 @@ page_three <- tabPanel(
     )
   )
 )
-## output$states -> display only 
-# display happiness rating of state, num mcdonalds
 
 # page four
 page_four <- tabPanel(
@@ -226,7 +219,6 @@ donald <- data %>%
 
 goofy <- full_join(mickey, donald, by = "state_abb")
 goofy <- na.omit(goofy)
-
 
 ui <- navbarPage( theme = shinytheme("united"),
                   "Happiness",
