@@ -38,9 +38,9 @@ gdp <- q1 + q2 + q3 + q4
 gdp_data$sums <- gdp
 
 # page two
-spongebob <- gdp_data %>% select(State, sums)
-patrick <- data %>% select(State, totalScore)
-squidward <- full_join(spongebob, patrick, by = "State")
+state_sums <- gdp_data %>% select(State, sums)
+state_total <- data %>% select(State, totalScore)
+gdp_state <- full_join(state_sums, state_total, by = "State")
 
 states <- mcd %>%
   distinct(properties.subDivision) %>%
@@ -58,8 +58,8 @@ colnames(mickey) <- c("state_abb", "num_mcd")
 donald <- data %>%
   select(state_abb, totalScore)
 
-goofy <- full_join(mickey, donald, by = "state_abb")
-goofy <- na.omit(goofy)
+mcd_total <- full_join(mickey, donald, by = "state_abb")
+mcd_total <- na.omit(mcd_total)
 
 server <- function(input, output) {
   
@@ -102,8 +102,8 @@ output$gdpData <- renderTable({
 })
   
 output$gdpData <- renderPlotly({
-  plot <- plot_ly(squidward, x = ~totalScore, y = ~sums, type = "scatter") %>%
-    add_trace(text = squidward$State, hoverinfo = "text",showlegend = F) %>%
+  plot <- plot_ly(gdp_state, x = ~totalScore, y = ~sums, type = "scatter") %>%
+    add_trace(text = gdp_state$State, hoverinfo = "text",showlegend = F) %>%
     layout(xaxis = list(title = "Happiness Score"),
             yaxis = list(title = "GDP"),
             title = "GDP per State vs. Happiness Score")
@@ -139,9 +139,9 @@ leaflet(data = temp) %>%
 })
   
 output$mcd_scatter <- renderPlotly({
-  plot <- plot_ly(data = goofy, x = ~totalScore, y = ~num_mcd,
+  plot <- plot_ly(data = mcd_total, x = ~totalScore, y = ~num_mcd,
                   type = "scatter", mode = "markers") %>%
-    add_trace(text = goofy$state_abb, hoverinfo = "text", showlegend = F) %>%
+    add_trace(text = mcd_total$state_abb, hoverinfo = "text", showlegend = F) %>%
     layout(xaxis = list(title = "Happiness Score"),
             yaxis = list(title = "Number of McDonald's"),
             title = "Number of McDonald's per state vs. Happiness Score")
@@ -181,7 +181,7 @@ output$life_ex_year <- renderText({
      select(-Total.population..Gapminder.) %>% 
      group_by(Year) %>% 
      summarize(avg_life_exp = mean(Life.expectancy..years., na.rm = TRUE)) %>% 
-     filter(Year == input$zoomies) %>% 
+     filter(Year == input$life_exp_input) %>% 
      pull(2) %>% 
      round(2)
 })

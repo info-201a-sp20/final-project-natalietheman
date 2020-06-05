@@ -72,9 +72,9 @@ gdp <- q1 + q2 + q3 + q4
 gdp_data$sums <- gdp
 
 # page two
-spongebob <- gdp_data %>% select(State, sums)
-patrick <- data %>% select(State, totalScore)
-squidward <- full_join(spongebob, patrick, by = "State")
+state_sums <- gdp_data %>% select(State, sums)
+state_total <- data %>% select(State, totalScore)
+gdp_state <- full_join(state_sums, state_total, by = "State")
 
 page_two <- tabPanel(
   "GDP",
@@ -160,7 +160,7 @@ page_four <- tabPanel(
   "Life Expectancy",
   h1(id="life-heading", "Life Expectancy"),
   tags$style(HTML("#life-heading{color: blue;}")),
-  numericInput("zoomies",
+  numericInput("life_exp_input",
                "Choose a Year to see the Life Expectancy!",
                1950,
                1950,
@@ -234,8 +234,8 @@ colnames(mickey) <- c("state_abb", "num_mcd")
 donald <- data %>%
   select(state_abb, totalScore)
 
-goofy <- full_join(mickey, donald, by = "state_abb")
-goofy <- na.omit(goofy)
+mcd_total <- full_join(mickey, donald, by = "state_abb")
+mcd_total <- na.omit(mcd_total)
 
 ui <- navbarPage( theme = shinytheme("united"),
                   "Happiness",
