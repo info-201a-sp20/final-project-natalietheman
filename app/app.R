@@ -6,15 +6,8 @@
 #
 #    http://shiny.rstudio.com/
 #
-library(shinythemes)
-library(shiny)
-library(dplyr)
-library(leaflet)
-library(stringr)
-library(plotly)
 
 source("app_server.R")
 source("app_ui.R")
 # Run the application 
 shinyApp(ui = ui, server = server)
-
