@@ -5,7 +5,6 @@ library(leaflet)
 library(stringr)
 library(plotly)
 
-# source("../return_sum_info.R", chdir = TRUE)
 data <- read.csv("data/data.csv", stringsAsFactors = FALSE)
 gdp_data <- read.csv("data/gdpPerState.csv", stringsAsFactors = FALSE)
 mcd <- read.csv("data/McDonalds.csv")
@@ -53,7 +52,7 @@ page_one <- tabPanel(
     p("The link below references the data set that we used to explore the third question.
           This data set was obtained from the World Happiness Report, European Commission, World Value
           Survey, and Pew Global Attitudes Survey."),
-    a("Life Expectancy Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/life-satisfaction-vs-life-expectancy.csv"),
+    a("Life Expectancy Link", href = "https://github.com/info-201a-sp20/final-project-natalietheman/blob/master/data/life-satisfaction-vs-life-expectancy.csv")
   ),
   sidebarPanel(
     img(src = "office.gif", width = "250px")
@@ -111,8 +110,10 @@ data$state_abb <- state.abb[match(data$State, state.name)]
 
 # page three
 page_three <- tabPanel(
+  includeCSS("style.css"),
   "McDonald's",
-  titlePanel("McDonald's"),
+  h1(id="big-heading", "McDonald's"),
+  tags$style(HTML("#big-heading{color: red;}")),
   sidebarLayout(
     sidebarPanel(
       selectInput(

@@ -80,9 +80,20 @@ squidward <- full_join(spongebob, patrick, by="State")
 
 page_two <- tabPanel(
     "GDP",
-    titlePanel("GDP"),
+    h1(id="gdp-heading", "GDP"),
+    tags$style(HTML("#gdp-heading{color: green;}")),
+    tags$head(tags$style(
+      HTML('
+           #gdp-sidebar {
+           background-color: #228B22;
+           }
+           
+           body, label, input, button, select { 
+           font-family: "Arial";
+           }')
+  )),
     sidebarLayout(
-      sidebarPanel(
+      sidebarPanel(id="gdp-sidebar",
         selectInput(
           inputId = "gdpstates",
           label = "Pick a state!",
@@ -109,9 +120,20 @@ data$state_abb <- state.abb[match(data$State, state.name)]
 
 page_three <- tabPanel(
     "McDonald's",
-    titlePanel("McDonald's"),
+    h1(id="mcd-heading", "McDonald's"),
+    tags$style(HTML("#mcd-heading{color: red;}")),
+    tags$head(tags$style(
+      HTML('
+           #mcd-sidebar {
+           background-color: #dec4de;
+           }
+           
+           body, label, input, button, select { 
+           font-family: "Arial";
+           }')
+  )),
     sidebarLayout(
-      sidebarPanel(
+      sidebarPanel(id="mcd-sidebar",
         selectInput(
           inputId = "states",
           label = "Pick a state!",
@@ -141,7 +163,8 @@ page_three <- tabPanel(
 
 page_four <- tabPanel(
     "Life Expectancy",
-    titlePanel("Life Expectancy"),
+    h1(id="life-heading", "Life Expectancy"),
+    tags$style(HTML("#life-heading{color: blue;}")),
     numericInput("zoomies",
                 "Choose a Year to see the Life Expectancy!",
                 1950,
@@ -402,7 +425,6 @@ server <- function(input, output) {
 
 source("app_server.R")
 source("app_ui.R")
-
 # Run the application 
 shinyApp(ui = ui, server = server)
 
