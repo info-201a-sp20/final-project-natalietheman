@@ -249,16 +249,7 @@ ui <- navbarPage( theme = shinytheme("united"),
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-  
- ;
-  ;
-  ;
-  ;
-  ;
-  ;
-  ;
-  
-  
+
     output$stateGdp <- renderText({
       return(paste0("GDP: $", gdp_data %>% filter(State == input$gdpstates) %>%
                pull(sums)))
