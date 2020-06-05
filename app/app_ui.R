@@ -39,6 +39,12 @@ page_one <- tabPanel(
   "Project Overview",
   titlePanel("Project Overview"),
   mainPanel(
+    h1("Purpose"),
+    p("The purpose of this project is to analyze the various relationships between
+      happiness and other characteristics in order to determine how to best improve
+      society. Happiness is important as it allows people to have a motivation to continue
+      forward and helps people function daily. Happiness also influences your health and
+      combats stress."),
     h1("Questions"),
     p(strong("1. How does GDP per capita relate to happiness within the United States?")),
     p("The link below references the dataset that we used to explore the first question.
@@ -181,7 +187,9 @@ page_five <- tabPanel(
               thus better accomodating their citizens. But this doesn't seem to be the case in general, as
               the relationship seems to be rather weak. For example, the GDP difference between North Dakota
               and West Virginia is 85,422 (which is rather small), however, their difference in life satisfaction is 32.2 (on a scale of 100)
-              which shows how a massive disparity in life satisfaction has no real relationship to GDP."),
+              which shows how a massive disparity in life satisfaction has no real relationship to GDP. 
+              The implications of this is that it demonstrates how the more economically successful states
+              aren't necessarily happier, demonstrating a lack of link between money and happiness."),
     tags$li("For the second question revolving around the relationship between the number
               of McDonald's and happiness, there appears to be no correlation. Despite what McDonald's
               may advertise, their happy meals do not seem to provide any extra happiness. To display
@@ -189,7 +197,9 @@ page_five <- tabPanel(
               respectively the 2nd and 50th ranked states in terms of happiness. In Utah, the number of McDonald's
               is 116 whereas in West Virginia the number of McDonald's is 104, showing a difference of 12
               McDonald's restaurants. This disparity is relatively small and not large enough to show a relationship
-              between the number of McDonald's and happiness levels."),
+              between the number of McDonald's and happiness levels. The implication of this insight
+              is that more accessible fast food does not necessarily improve happiness, so happiness
+              may be potentially more closely tied to quality of food instead of accessibility."),
     tags$li("For the third question revolving around the relationship between life expectancy
               and life satisfaction, we were able to deduce that as life expectancy increased,
               as did life satisfaction. We believe these two to be related as societies that
@@ -197,7 +207,10 @@ page_five <- tabPanel(
               leading to a higher quality of life and thus higher life satisfaction. If we were to look
               at the boxplot near 5.075 in terms of life satisfaction, we can see that it has a life
               expectancy range near 70-74 years, which is an outlier but it does not detract from
-              the overall positive linear trend of life satisfaction and life expectancy both increasing.")
+              the overall positive linear trend of life satisfaction and life expectancy both increasing.
+              The implication of this insight is that we can be derive that a healthier population is
+              more likely to be happier as well, so to boost happiness we can provide easier access
+              to healthcare or provide more healthcare options.")
   )
 )
 
